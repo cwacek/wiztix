@@ -23,7 +23,7 @@ function LoadScripts() {
 
 function addToGameList(gameInfo) {
     var element = $("<tr class='gameInfo'><td>" + gameInfo.opponent + "</td><td>" + gameInfo.date + "</td><td>" + gameInfo.gameType+"</td></tr>")
-    var gameId = "" + gameInfo.opponent + "_" + gameInfo.date + "_" + gameInfo.gameType.replace(/\//g,'')
+    var gameId = "" + gameInfo.opponent + "_" + gameInfo.date.replace(/\//g,'')  + "_" + gameInfo.gameType
     element.attr('id',gameId)
     element.data('gameInfo', gameInfo)
     element.data('gameInfo').gameId = gameId
@@ -42,7 +42,7 @@ function displaySeating() {
     console.log("Clicked: "+ game+ " - Data: " + game.data("gameInfo"));
     var gameLevel = game.data("gameInfo").gameType
 
-    var seatingList = $("<tr class='sectionList'><td><table><thead><th>Section</th><th>Price</th></thead><tbody></tbody></table></td></tr>")
+    var seatingList = $("<tr class='sectionList'><td><table class='table table-condensed'><thead><th>Section</th><th>Price</th></thead><tbody></tbody></table></td></tr>")
     seatingList.find('td').attr('colspan', 4)
     var insertAt  = seatingList.find("tbody")
 
@@ -106,11 +106,12 @@ function rebuildCalculator() {
 
     for (var i = 0; i < selections.length; i++) {
       var selection = selections[i]
-      var entry = $("<li class='selection'>" + 
+      var entry = $("<li class='list-unstyled selection'>" + 
                        "<span class='date'>" + selection.data.date + "</span>" +
                        "<span class='desc'>" + selection.data.opponent + "</span>" +
                        "<span class='seat'>" + selection.data.selectedSeat+ "</span>" +
                        "<span class='cost'>$" + selection.price + "</span>" +
+                       "<button type='button' class='close'>&times;</button>" +
                        "</li>")
 
       var mkRemoveFunction = function(sdata) {
@@ -128,13 +129,7 @@ function rebuildCalculator() {
         }
       }
 
-      entry.on('click', mkRemoveFunction(selection.data)
-
-
-
-        )
-
-
+      entry.find('button').on('click', mkRemoveFunction(selection.data))
 
       container.append(entry)
     }
